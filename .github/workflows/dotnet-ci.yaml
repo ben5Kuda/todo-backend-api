@@ -43,8 +43,9 @@ jobs:
       # Step 7: Build Docker image
       - name: Build Docker image
         run: |
-          docker build -f ToDo.API/Dockerfile -t ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_NAME }}:latest .
-
+          docker build -t ${{ secrets.AZURE_ACR_LOGIN_SERVER }}/${{ secrets.IMAGE_NAME }}:latest .
+        working-directory: ToDo.API
+      
       # Step 8: Push Docker image to ACR
       - name: Push Docker image to ACR
         run: |
