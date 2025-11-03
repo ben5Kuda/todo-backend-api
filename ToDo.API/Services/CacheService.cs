@@ -5,20 +5,20 @@ namespace ToDo.API.Services;
 
 public class CacheService(IMemoryCache memoryCache): ICacheService
 {
+    const string CacheKey = "todos";
     public void SetCache(IEnumerable<TodoItem> todoItem)
     {
         var cacheOptions = new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromSeconds(30))
-            .SetAbsoluteExpiration(TimeSpan.FromSeconds(300))
+            .SetSlidingExpiration(TimeSpan.FromSeconds(400))
+            .SetAbsoluteExpiration(TimeSpan.FromSeconds(3000))
             .SetPriority(CacheItemPriority.Normal);
 
-        memoryCache.Set("todos", todoItem, cacheOptions);
+        memoryCache.Set(CacheKey, todoItem, cacheOptions);
     }
 
     public IEnumerable<TodoItem> GetCache()
     {
-        const string cacheKey = "todos";
-        if (memoryCache.TryGetValue(cacheKey, out IEnumerable<TodoItem>? todoItems))
+        if (memoryCache.TryGetValue(CacheKey, out IEnumerable<TodoItem>? todoItems))
             return todoItems ?? [];
 
         var defaultTodos = GetDefaultToDos();

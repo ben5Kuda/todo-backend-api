@@ -6,12 +6,13 @@ namespace ToDo.API.Endpoints;
 
 [ApiController]
 [Route("[controller]")]
-public class TodosModule(ICacheService cacheService): ControllerBase
+public class TodosModule(ICacheService cacheService) : ControllerBase
 {
     [HttpGet("GetTodos")]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-       return Ok(cacheService.GetCache());
+        await Task.Delay(5000);
+        return await Task.FromResult<IActionResult>(Ok(cacheService.GetCache()));
     }
 
     [HttpPost("AddTodos")]
@@ -20,7 +21,7 @@ public class TodosModule(ICacheService cacheService): ControllerBase
         var currentToDos = cacheService.GetCache().ToList();
         if (currentToDos.Exists(x => x.Title == title))
             return BadRequest("Todo item already exists");
-        
+
         var mostRecentTodo = currentToDos.MaxBy(x => x.Id);
         var todoItem = new TodoItem
         {
@@ -28,40 +29,40 @@ public class TodosModule(ICacheService cacheService): ControllerBase
             Title = title,
             IsCompleted = false
         };
-        
+
         currentToDos.Add(todoItem);
         cacheService.SetCache(currentToDos);
         return Ok(todoItem);
     }
-    
+
     [HttpPut("UpdateTodos/{id}")]
     public IActionResult Put(int id, bool isCompleted)
     {
         var currentToDos = cacheService.GetCache().ToList();
-       
+
         var index = currentToDos.FindIndex(r => r.Id == id);
 
         if (index == -1)
             return BadRequest("Todo item does not exists");
-        
-        currentToDos[index].IsCompleted = isCompleted;        
-        
+
+        currentToDos[index].IsCompleted = isCompleted;
+
         cacheService.SetCache(currentToDos);
         return Ok();
     }
-    
+
     [HttpDelete("DeleteTodos/{id}")]
     public IActionResult Delete(int id)
     {
         var currentToDos = cacheService.GetCache().ToList();
-       
+
         var todoItem = currentToDos.Find(r => r.Id == id);
 
         if (todoItem is null)
             return BadRequest("Todo item does not exists");
-        
+
         currentToDos.Remove(todoItem);
-        
+
         cacheService.SetCache(currentToDos);
         return Ok();
     }
