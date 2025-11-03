@@ -40,6 +40,18 @@ jobs:
           username: ${{ secrets.AZURE_ACR_USERNAME }}
           password: ${{ secrets.AZURE_ACR_PASSWORD }}
 
+      # Step 6.5: Debug - List directory structure
+      - name: List directory structure
+        run: |
+          echo "Current directory:"
+          pwd
+          echo "Repository root contents:"
+          ls -la
+          echo "ToDo.API directory contents:"
+          ls -la ToDo.API/ || echo "ToDo.API directory not found"
+          echo "Checking for Dockerfile:"
+          test -f ToDo.API/Dockerfile && echo "Dockerfile exists" || echo "Dockerfile NOT found"
+
       # Step 7: Build Docker image      
       - name: Build Docker image
         run: |
