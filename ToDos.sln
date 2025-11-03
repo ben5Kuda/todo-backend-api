@@ -6,7 +6,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{5227
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{0BF54896-EF49-488E-BC95-A962FB1F47BB}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Workspaces\demos\todos-ui\.github\workflows\dotnet-ci.yaml = ..\..\..\..\Workspaces\demos\todos-ui\.github\workflows\dotnet-ci.yaml
+		.github\workflows\dotnet-ci.yaml = .github\workflows\dotnet-ci.yaml
 	EndProjectSection
 EndProject
 Global
